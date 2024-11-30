@@ -8,5 +8,5 @@ I have seen some 3rd party Nanos with ICSP headers that do not match the pinout 
 
 ![image](../images/GenuineNanoPinout.jpg)
 
-# Wiring Diagram
+# Two Board Wiring Diagram
 ![image](../images/TwoNanoWiringDiagram.jpg)
