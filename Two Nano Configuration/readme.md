@@ -7,3 +7,6 @@ All code should be used at your own risk. I do not accept responsibilty for dama
 I have seen some 3rd party Nanos with ICSP headers that do not match the pinout of genuine Nanos. Verify connections with a multimeter before using these pins for programming or power. I have illustrated power/ground using only the edge pins for this reason. Using the ICSP pins may make wiring easier, but they must be verified prior to use. 
 
 ![image](../images/GenuineNanoPinout.jpg)
+
+# Wiring Diagram
+![image](../images/TwoNanoWiringDiagram.jpg)
