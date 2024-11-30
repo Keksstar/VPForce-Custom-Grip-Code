@@ -1,4 +1,4 @@
-# Two Nano Configuration
+# One Nano Configuration
 Uses one Arduino Nano to achieve up to 16 buttons and 2 axes. Can be used with or without axes. If making a button only stick with this option, select "Generic Grip" in the VPF configurator. If axes are to be connected select "WinWing Adapter" in the VPF configurator. 
 
 # DISCLAIMER
@@ -9,5 +9,5 @@ I have seen some 3rd party Nanos with ICSP headers that do not match the pinout 
 
 ![image](../images/GenuineNanoPinout.jpg)
 
-# Wiring Diagram
+# Single Board Wiring Diagram
 ![image](../images/OneNanoWiringDiagram.jpg)
