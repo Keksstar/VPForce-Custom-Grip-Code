@@ -1,5 +1,5 @@
 # VPForce-Custom-Grip-Code
-Various methods to make custom grips compatible with VPForce boards for use with VPF Rhino or DIY options
+Various methods to make custom grips compatible with VPForce boards for use with VPF Rhino or DIY options. Updated from legacy code to use Arduino Nano for access to cheap clones and better input configuration. 
 
 # DISCLAIMER
 All code should be used at your own risk. I do not accept responsibilty for damages or loss due to implementation of this code. I am not a software engineer, so there are more than likely ways that this code can be improved. Please feel free to make suggestions for improvements but as long as things are working as intended I may reserve the right to keep things as is.
