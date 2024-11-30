@@ -8,12 +8,9 @@ All code should be used at your own risk. I do not accept responsibilty for dama
 Uses two Arduino Nanos to achieve 32 buttons and 4 axes. Each board can be used with or without axes but the boards can not be used on their own and must be paired together as shown in the wiring diagram. If making a button only stick with this option, select "Generic Grip" in the VPF configurator. If axes are to be connected select "WinWing Adapter" in the VPF configurator. 
 
 # One Nano Configuration
-Uses one Arduino Nano to achieve 16 buttons and 2 axes. If making a button only stick with this option, select "Generic Grip" in the VPF configurator. If axes are to be connected select "WinWing Adapter" in the VPF configurator. 
+Uses one Arduino Nano to achieve 16 buttons and 2 axes. If making a button only stick with this option, select "Generic Grip" in the VPF configurator. If axes are to be connected select "WinWing Adapter" in the VPF configurator. Replaces legacy "Arduino Only" code. 
 
 # Arduino with Shift Register
 UPDATE IN PROGRESS TO USE LATEST WinWing ADAPTER CODE. 
 <!--Use the files in "Arduino+Shift-Register" if you have connected a shift register in series with your Arduino to expand the inputs. This was orignally designed for the VPForce Shift Register board but should work with other shift registers that use CD4021B shift registers or SN74HC165 shift registers with an inverted latch signal. Please review the connection diagrams of those chips prior to connection to verify proper circuit configurations.-->
 
-# Arduino Only
-UPDATE IN PROGRESS TO USE LATEST WinWing ADAPTER CODE. 
-<!--Use the files in "Arduino-Only" if you do not have a shift register and are only using the input pins on your Arduino for buttons.-->
