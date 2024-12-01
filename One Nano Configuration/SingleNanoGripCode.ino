@@ -172,24 +172,24 @@ ISR (SPI_STC_vect)
       SPDR = 16; //send 0x10 to disable axis to hat
       pullcount++;  
     }
-    else if (pullcount == 9) //byte 9 axis1b
+    else if (pullcount == 9) //byte 9 axis1b, signal from A6
     {
       SPDR = lowerbit1;
       pullcount++;  
     }
-    else if (pullcount == 10) //byte 10 axis1a
+    else if (pullcount == 10) //byte 10 axis1a, signal from A6
     {
       SPDR = upperbit1;
       pullcount++;  
     }
-    else if (pullcount == 11) //byte 11 axis2b
+    else if (pullcount == 11) //byte 11 axis2b, signal from A7
     {
       //Swap the following two lines comments if only using 1 axis
       //SPDR = 0; 
       SPDR = lowerbit2;
       pullcount++;  
     }
-    else if (pullcount == 12) //byte 12 axis2a
+    else if (pullcount == 12) //byte 12 axis2a, signal from A7
     {
       //Swap the following two lines comments if only using 1 axis
       //SPDR = 0; 
