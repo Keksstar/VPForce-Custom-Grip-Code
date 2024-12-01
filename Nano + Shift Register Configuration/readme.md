@@ -1,4 +1,5 @@
 # Nano + Shift Register Configuration
+CODE IN PROGRESS
 Uses one Arduino Nano with a 32 bit VPF Shift Register to achieve up to 48 buttons with 3 axes or 47 buttons with 4 axes. Can be used with or without axes. If axes are to be connected select "WinWing Adapter" in the VPF configurator. "Generic Grip" is untested on 48 button only with no axis configuration, you can try it but it is not guaranteed to work.
 
 # DISCLAIMER
