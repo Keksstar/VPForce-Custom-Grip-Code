@@ -184,11 +184,15 @@ ISR (SPI_STC_vect)
     }
     else if (pullcount == 11) //byte 11 axis2b
     {
+      //Swap the following two lines comments if only using 1 axis
+      //SPDR = 0; 
       SPDR = lowerbit2;
       pullcount++;  
     }
     else if (pullcount == 12) //byte 12 axis2a
     {
+      //Swap the following two lines comments if only using 1 axis
+      //SPDR = 0; 
       SPDR = upperbit2;
       pullcount++;  
     }
