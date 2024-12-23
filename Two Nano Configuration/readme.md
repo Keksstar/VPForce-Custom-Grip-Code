@@ -10,4 +10,4 @@ I have seen some 3rd party Nanos with ICSP headers that do not match the pinout 
 ![image](../images/GenuineNanoPinout.jpg)
 
 # Two Board Wiring Diagram
-![image](../images/TwoNanoWiringDiagram.jpg)
+![image](../images/TwoNanoWiringDiagramP.jpg)
