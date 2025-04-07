@@ -86,6 +86,8 @@ int dval11;
 int dval12;
 int dval13;
 int dval14;
+int dval15;
+int dval16;
 
 
 
@@ -591,4 +593,26 @@ else
         dval14 = 32; //00100000
         buttonbit2 |= dval14;
       }
+
+if (digitalRead(digPin3) == LOW) 
+      {
+        dval15 = 191; //10111111
+        buttonbit2 &= dval15;
+      }
+    else
+      {
+        dval15 = 64; //01000000
+        buttonbit2 |= dval15; 
+      }
+
+    if (digitalRead(digPin3) == LOW)
+      {
+        dval16 = 127; //01111111
+        buttonbit2 &= dval16;
+      }
+    else
+      {
+        dval16 = 128; //10000000
+        buttonbit2 |= dval16;
+      }  
 }
