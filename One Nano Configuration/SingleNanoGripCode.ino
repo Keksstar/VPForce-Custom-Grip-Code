@@ -5,7 +5,7 @@
 
 //Arduino Nano Based code - 10 digital pins usable + 8 Analog Pins available as optional digintal pins
 
-//To be configured for 16 button inputs two axes
+//To be configured for 14 button inputs four axes
 
 //THIS IS THE PROFILE WILL ONLY WORK ON ITS OWN FOR THE CONFIGURATION DESCRIBED ABOVE.
 
@@ -65,10 +65,10 @@ volatile byte lowerbit1 = 160;
 volatile byte upperbit1 = 176; 
 volatile byte lowerbit2 = 192;
 volatile byte upperbit2 = 208; 
-volatile byte lowerbit3 = 192; //// ???
-volatile byte upperbit3 = 208; //// ???
-volatile byte lowerbit4 = 192; //// ???
-volatile byte upperbit4 = 208; //// ???
+volatile byte lowerbit3 = 191; //// ???
+volatile byte upperbit3 = 64; //// ???
+volatile byte lowerbit4 = 127; //// ???
+volatile byte upperbit4 = 128; //// ???
 volatile byte buttonbit1 = 255; 
 volatile byte buttonbit2 = 255; 
 volatile byte pullcount; // variable to count the number of SPI pulls
@@ -86,8 +86,6 @@ int dval11;
 int dval12;
 int dval13;
 int dval14;
-int dval15;
-int dval16; 
 
 
 
@@ -103,8 +101,6 @@ void setup() {
   pinMode(digPin1, INPUT_PULLUP); //Button, default state high. 
   pinMode(digPin2, INPUT_PULLUP); //Button, default state high. 
   pinMode(digPin3, INPUT_PULLUP); //Button, default state high. 
-  pinMode(digPin4, INPUT_PULLUP); //Button, default state high. 
-  pinMode(digPin5, INPUT_PULLUP); //Button, default state high.  
   pinMode(9, INPUT_PULLUP); //Button, default state high. 
   pinMode(8, INPUT_PULLUP); //Button, default state high. 
   pinMode(7, INPUT_PULLUP); //Button, default state high. 
@@ -193,50 +189,50 @@ ISR (SPI_STC_vect)
       SPDR = 16; //send 0x10 to disable axis to hat
       pullcount++;  
     }
-    else if (pullcount == 9) //byte 9 axis1b, signal from A6
+    else if (pullcount == 9) //byte 9 axis1b, signal from A4
     {
       //Swap the following two lines comments if axis is unused: 
       //SPDR = 0; 
       SPDR = lowerbit1;
       pullcount++;  
     }
-    else if (pullcount == 10) //byte 10 axis1a, signal from A6
+    else if (pullcount == 10) //byte 10 axis1a, signal from A4
     {
       //Swap the following two lines comments if axis is unused: 
       //SPDR = 0; 
       SPDR = upperbit1;
       pullcount++;  
     }
-    else if (pullcount == 11) //byte 11 axis2b, signal from A7
+    else if (pullcount == 11) //byte 11 axis2b, signal from A5
     {
       //Swap the following two lines comments if axis is unused: 
       //SPDR = 0; 
       SPDR = lowerbit2;
       pullcount++;  
     }
-    else if (pullcount == 12) //byte 12 axis2a, signal from A7
+    else if (pullcount == 12) //byte 12 axis2a, signal from A5
     {
       //Swap the following two lines comments if only using 1 axis
       //SPDR = 0; 
       SPDR = upperbit2;
       pullcount++;  
     }
-    else if (pullcount == 13) //byte 13 axis3b
+    else if (pullcount == 13) //byte 13 axis3b, signal from A6
     {
       SPDR = lowerbit3;
       pullcount++;  
     }
-    else if (pullcount == 14) //byte 14 axis3a
+    else if (pullcount == 14) //byte 14 axis3a, signal from A6
     {
       SPDR = upperbit3;
       pullcount++;  
     }
-    else if (pullcount == 15) //byte 15 axis4b
+    else if (pullcount == 15) //byte 15 axis4b, signal from A7
     {
       SPDR = lowerbit4;
       pullcount++;  
     }
-    else if (pullcount == 16) //byte 16 axis4a
+    else if (pullcount == 16) //byte 16 axis4a, signal from A7
     {
       SPDR = upperbit4;
       pullcount++;  
@@ -321,6 +317,8 @@ void loop()
     {
       maxval4 = val4; //set new maxiumum to high value
     }
+
+  
     // the data shifts 8 bits at a time. The ADC of the arduino is a 10 bit ADC, and
     // the WinWing structure is given for a 12 bit value (0..4095), so 
     // we need to convert the 10 bit to a 12 bit number, the calibration must also be done in the
@@ -593,25 +591,4 @@ else
         dval14 = 32; //00100000
         buttonbit2 |= dval14;
       }
-if (digitalRead(digPin4) == LOW) 
-      {
-        dval15 = 191; //10111111
-        buttonbit2 &= dval15;
-      }
-    else
-      {
-        dval15 = 64; //01000000
-        buttonbit2 |= dval15; 
-      }
-
-    if (digitalRead(digPin5) == LOW)
-      {
-        dval16 = 127; //01111111
-        buttonbit2 &= dval16;
-      }
-    else
-      {
-        dval16 = 128; //10000000
-        buttonbit2 |= dval16;
-      }    
 }
