@@ -1,3 +1,6 @@
+//// WIP !!! ////
+
+
 #include <SPI.h>
 
 //Arduino Nano Based code - 10 digital pins usable + 8 Analog Pins available as optional digintal pins
@@ -34,24 +37,38 @@ int digPin0 = A0; // Button input
 int digPin1 = A1; // Button input
 int digPin2 = A2; // Button input
 int digPin3 = A3; // Button input
-int digPin4 = A4; // Button input
-int digPin5 = A5; // Button input
-int analogPin1 = A6; 
-int analogPin2 = A7; 
+int analogPin1 = A4; 
+int analogPin2 = A5;
+int analogPin3 = A6; 
+int analogPin4 = A7; 
 int val1 = 0;  // variable to store the value read by an axis
 int val2 = 0;  // variable to store the value read by an axis
+int val3 = 0;  // variable to store the value read by an axis
+int val4 = 0;  // variable to store the value read by an axis
 long smoothval1 = 0; 
-long smoothval2 = 0; 
+long smoothval2 = 0;
+long smoothval3 = 0; 
+long smoothval4 = 0; 
 long conval1 = 0; //variable to store the converted axis value
 long conval2 = 0; //variable to store the converted axis value
+long conval3 = 0; //variable to store the converted axis value
+long conval4 = 0; //variable to store the converted axis value
 int minval1; //variable to store min for conversion
 int maxval1; //variable to store max for conversion
 int minval2; //variable to store min for conversion
 int maxval2; //variable to store max for conversion
+int minval3; //variable to store min for conversion
+int maxval3; //variable to store max for conversion
+int minval4; //variable to store min for conversion
+int maxval4; //variable to store max for conversion
 volatile byte lowerbit1 = 160;
 volatile byte upperbit1 = 176; 
 volatile byte lowerbit2 = 192;
 volatile byte upperbit2 = 208; 
+volatile byte lowerbit3 = 192; //// ???
+volatile byte upperbit3 = 208; //// ???
+volatile byte lowerbit4 = 192; //// ???
+volatile byte upperbit4 = 208; //// ???
 volatile byte buttonbit1 = 255; 
 volatile byte buttonbit2 = 255; 
 volatile byte pullcount; // variable to count the number of SPI pulls
@@ -106,6 +123,10 @@ void setup() {
   maxval1 = minval1; //initialize maxval1
   minval2 = analogRead(analogPin2);  // initialize minval2
   maxval2 = minval2;  // initialize maxval2
+  minval3 = analogRead(analogPin3); //initialize minval3
+  maxval3 = minval3; //initialize maxval3
+  minval4 = analogRead(analogPin4);  // initialize minval4
+  maxval4 = minval4;  // initialize maxval4
 
   // turn on SPI in slave mode
   SPCR |= _BV(SPE);
@@ -202,22 +223,22 @@ ISR (SPI_STC_vect)
     }
     else if (pullcount == 13) //byte 13 axis3b
     {
-      SPDR = 0;
+      SPDR = lowerbit3;
       pullcount++;  
     }
     else if (pullcount == 14) //byte 14 axis3a
     {
-      SPDR = 0;
+      SPDR = upperbit3;
       pullcount++;  
     }
     else if (pullcount == 15) //byte 15 axis4b
     {
-      SPDR = 0;
+      SPDR = lowerbit4;
       pullcount++;  
     }
     else if (pullcount == 16) //byte 16 axis4a
     {
-      SPDR = 0;
+      SPDR = upperbit4;
       pullcount++;  
     }
     else 
@@ -234,8 +255,12 @@ void loop()
 {  
   val1 = analogRead(analogPin1); 
   val2 = analogRead(analogPin2);
+  val3 = analogRead(analogPin3); 
+  val4 = analogRead(analogPin4);
   smoothval1 = 0;
-  smoothval2 = 0;   
+  smoothval2 = 0;
+  smoothval3 = 0;
+  smoothval4 = 0; 
     
     //smoothing to eliminate noise on the axis data
     for (int v1 = 0; v1 < 64; v1++) //take samples of analogPin1
@@ -249,6 +274,18 @@ void loop()
       smoothval2 = smoothval2 + analogRead(analogPin2); 
     }
     smoothval2 = round(smoothval2 / 64);  // divide by samples to average smoothval2
+
+    for (int v3 = 0; v3 < 64; v3++) //take samples of analogPin2
+    {
+      smoothval3 = smoothval3 + analogRead(analogPin3); 
+    }
+    smoothval3 = round(smoothval3 / 64);  // divide by samples to average smoothval2
+
+    for (int v4 = 0; v4 < 64; v4++) //take samples of analogPin2
+    {
+      smoothval4 = smoothval4 + analogRead(analogPin4); 
+    }
+    smoothval4 = round(smoothval4 / 64);  // divide by samples to average smoothval2
   
   // the following code handles scaling for calibration, min and max to be used for conversion to 0..4096 values
   // cycle the axes over their full range each startup to set min and max, they will adjust as needed if full range is not achieved. 
@@ -268,7 +305,22 @@ void loop()
     {
       maxval2 = val2; //set new maxiumum to high value
     }
-
+  if (val3 < minval3)
+    {
+      minval3 = val3; //set new minimum to new low value
+    }
+  if (val3 > maxval3)
+    {
+      maxval3 = val3; //set new maxiumum to high value
+    }
+  if (val4 < minval4)
+    {
+      minval4 = val4; //set new minimum to new low value
+    }
+  if (val4 > maxval4)
+    {
+      maxval4 = val4; //set new maxiumum to high value
+    }
     // the data shifts 8 bits at a time. The ADC of the arduino is a 10 bit ADC, and
     // the WinWing structure is given for a 12 bit value (0..4095), so 
     // we need to convert the 10 bit to a 12 bit number, the calibration must also be done in the
@@ -315,11 +367,56 @@ else
     conval2 = 0;
   }
 
+if(maxval3 > minval3)
+  {
+    int ii = maxval3 - minval3;
+    int jj = smoothval3 - minval3;
+    float kk = (float)jj / (float)ii;
+      if (kk < 0.05) // lower deadzone
+      {
+        kk = 0.0; 
+      }
+      if (kk > 0.95) //upper deadzone
+      {
+        kk = 1.0; 
+      } 
+    conval3 = round(kk * 4095); 
+    
+  }
+else
+  {
+    conval3 = 0;
+  }
+
+if(maxval4 > minval4)
+  {
+    int iii = maxval4 - minval4;
+    int jjj = smoothval4 - minval4;
+    float kkk = (float)jjj / (float)iii;
+      if (kkk < 0.05) // lower deadzone
+      {
+        kkk = 0.0; 
+      }
+      if (kkk > 0.95) //upper deadzone
+      {
+        kkk = 1.0; 
+      } 
+    conval4 = round(kkk * 4095); 
+    
+  }
+else
+  {
+    conval4 = 0;
+  }
 
     upperbit1 = conval1 >> 8;
     lowerbit1 = conval1;
     upperbit2 = conval2 >> 8;
     lowerbit2 = conval2;
+    upperbit3 = conval3 >> 8;
+    lowerbit3 = conval3;
+    upperbit4 = conval4 >> 8;
+    lowerbit4 = conval4;
 
 // Serial.print(val1);
 // Serial.print(",");
